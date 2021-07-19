@@ -13,7 +13,7 @@ class FlutterOnfido {
   static const JsonEncoder _jsonEncoder = const JsonEncoder();
 
   static Future<OnfidoResult> start({
-    required OnfidoConfig config,
+    OnfidoConfig config,
     OnfidoIOSAppearance iosAppearance = const OnfidoIOSAppearance(),
   }) async {
     final error = _validateConfig(config);
@@ -29,19 +29,19 @@ class FlutterOnfido {
         _jsonDecoder.convert(_jsonEncoder.convert(result)));
   }
 
-  static String? _validateConfig(OnfidoConfig config) {
-    if (config.sdkToken == null || config.sdkToken!.isEmpty) {
+  static String _validateConfig(OnfidoConfig config) {
+    if (config.sdkToken == null || config.sdkToken.isEmpty) {
       return "Sdk token is missing";
     }
     if (!RegExp(r'^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$')
-        .hasMatch(config.sdkToken!)) {
+        .hasMatch(config.sdkToken)) {
       return "Sdk token is not valid JWT";
     }
     if (config.flowSteps == null) {
       return "Flow steps configuration is missing";
     }
-    if (config.flowSteps!.captureDocument == null &&
-        config.flowSteps!.captureFace == null) {
+    if (config.flowSteps.captureDocument == null &&
+        config.flowSteps.captureFace == null) {
       return "Flow steps doesn't include either captureDocument options or captureFace options";
     }
     return null;
